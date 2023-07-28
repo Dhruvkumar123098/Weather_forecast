@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Forecast</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <div class="cards">
+      <div class="search">
+        <input type="text" id="search-input" placeholder="Search city...">
+      </div>
+      <div class="weather">
+        <img src="rain.png" class="Weather-Icon">
+        <h1 class="temp">20°C</h1>
+        <h2 class="city">London</h2>
+        <div class="details">
+          <div class="col">
+            <img src="wind.png" alt="Wind Icon">
+            <div>
+              <p class="wind">50%</p>
+              <p>Wind</p>
+            </div>
+          </div>
+          <div class="col">
+            <img src="humidity.png" alt="Humidity Icon">
+            <div>
+              <p class="humidity">15KM/H</p>
+              <p>Humidity</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Add more weather cards here for different weather conditions -->
+  </main>
+  <script>
+    // JavaScript code starts here
+    const apiKey = '494ef5cf25a9368f86127bb9ad012d5f';
+    const apiUrl = 'https://api.openweathermap.org/data/2.5/weather?units=metric&q=';
+    const searchInput = document.querySelector('#search-input');
+
+    searchInput.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            checkweather(searchInput.value);
+        }
+    });
+
+    async function checkweather(city) {
+        const response = await fetch(apiUrl + city + '&appid=' + apiKey);
+        var data = await response.json();
+        console.log(data);
+        document.querySelector('.temp').innerHTML = data.main.temp + '°C';
+        document.querySelector('.humidity').innerHTML = data.main.humidity + '%';
+        document.querySelector('.wind').innerHTML = data.wind.speed + 'KM/H';
+        document.querySelector('.city').innerHTML = data.name;
+
+        // Weather icon selection
+        if (data.weather[0].main === 'clouds') {
+            document.querySelector('.Weather-Icon').src = 'clouds.png';
+        } else if (data.weather[0].main === 'rain') {
+            document.querySelector('.Weather-Icon').src = 'rain.png';
+        } else if (data.weather[0].main === 'mist') {
+            document.querySelector('.Weather-Icon').src = 'mist.png';
+        } else if (data.weather[0].main === 'wind') {
+            document.querySelector('.Weather-Icon').src = 'wind.png';
+        } else if (data.weather[0].main === 'snow') {
+            document.querySelector('.Weather-Icon').src = 'snow.png';
+        } else if (data.weather[0].main === 'drizzle') {
+            document.querySelector('.Weather-Icon').src = 'drizzle.png';
+        }
+    }
+  </script>
+</body>
+</html>
